@@ -2,5 +2,7 @@ package domain.usecase
 
 interface IUseCaseFactory {
 
-    fun createStartGameUseCase(): IStartGameUseCase
+    fun createStartGameUseCase(playerNames: List<String>): IStartGameUseCase
+
+    fun createGetGameStateUseCase(): IGetGameStateUseCase
 }

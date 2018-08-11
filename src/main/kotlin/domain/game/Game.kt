@@ -6,7 +6,7 @@ import java.util.*
 class Game(
     players: List<Player>,
     val seed: Long = System.currentTimeMillis()
-){
+) {
 
     val playerStates: List<Pair<Player, PlayerState>> = listOf()
     val cardStore: CardStore = CardStoreFactory().createCardStore()
@@ -36,7 +36,8 @@ class GameFactory {
 
     fun create(
         players: List<Player>,
-               seed: Long = System.currentTimeMillis()) {
-
+        seed: Long = System.currentTimeMillis()
+    ): Game {
+        return Game(players, seed)
     }
 }
