@@ -1,8 +1,8 @@
-package org.tumba.frodo.game
+package org.tumba.frodo.domain.game
 
-import org.tumba.frodo.core.DevelopmentCard
-import org.tumba.frodo.core.DevelopmentCardType
-import org.tumba.frodo.core.IDevelopmentCard
+import org.tumba.frodo.domain.core.DevelopmentCard
+import org.tumba.frodo.domain.core.DevelopmentCardType
+import org.tumba.frodo.domain.core.IDevelopmentCard
 
 class CardStore(
     initialCards: List<IDevelopmentCard>

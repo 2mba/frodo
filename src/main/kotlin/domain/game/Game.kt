@@ -1,6 +1,6 @@
-package org.tumba.frodo.game
+package org.tumba.frodo.domain.game
 
-import org.tumba.frodo.core.Player
+import org.tumba.frodo.domain.core.Player
 import java.util.*
 
 class Game(
@@ -29,5 +29,14 @@ class Game(
     enum class DiceThrowOption {
         USE_ONE,
         USE_TWO
+    }
+}
+
+class GameFactory {
+
+    fun create(
+        players: List<Player>,
+               seed: Long = System.currentTimeMillis()) {
+
     }
 }

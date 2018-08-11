@@ -1,4 +1,4 @@
-package org.tumba.frodo.core
+package org.tumba.frodo.domain.core
 
 interface IDevelopmentCard : ICard {
 

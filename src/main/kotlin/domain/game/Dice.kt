@@ -1,4 +1,4 @@
-package org.tumba.frodo.game
+package org.tumba.frodo.domain.game
 
 import java.util.*
 

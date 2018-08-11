@@ -1,4 +1,4 @@
-package org.tumba.frodo.core
+package org.tumba.frodo.domain.core
 
 enum class SightCard(override val cost: Int): ICard {
     Terminal(cost = 4),
