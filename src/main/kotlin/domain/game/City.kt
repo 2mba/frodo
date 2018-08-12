@@ -2,15 +2,16 @@ package org.tumba.frodo.domain.game
 
 import org.tumba.frodo.domain.core.DevelopmentCard
 import org.tumba.frodo.domain.core.DevelopmentCardType
-import org.tumba.frodo.domain.core.IDevelopmentCard
+import org.tumba.frodo.domain.core.SightCard
 
 class City(
-    initialBuildings: List<IDevelopmentCard>
+    initialBuildings: List<DevelopmentCard>
 ){
 
-    var buildings: MutableList<IDevelopmentCard> = initialBuildings.toMutableList()
+    val buildings: MutableList<DevelopmentCard> = initialBuildings.toMutableList()
+    val sightCards: MutableList<SightCard> = mutableListOf()
 
-    fun build(card: IDevelopmentCard) {
+    fun build(card: DevelopmentCard) {
         buildings.add(card)
     }
 }

@@ -12,7 +12,7 @@ class UseCaseFactory: IUseCaseFactory {
     }
 
     override fun createGetGameStateUseCase(): IGetGameStateUseCase {
-        return GetGameStateUseCase()
+        return GetGameStateUseCase(GameHolder.instance.game!!)
     }
 
     companion object {
