@@ -1,5 +1,6 @@
 package presentation
 
+import domain.dto.PlayerStateDto
 import io.reactivex.rxjavafx.schedulers.JavaFxScheduler
 import io.reactivex.rxkotlin.subscribeBy
 import javafx.collections.FXCollections
@@ -13,6 +14,7 @@ class GameViewModel(
 ) {
 
     var storeObservableList: ObservableList<DevelopmentCard> = FXCollections.observableArrayList()
+    var playerStates: ObservableList<PlayerStateDto> = FXCollections.observableArrayList(PlayerStateDto(0, listOf(), listOf(), 50))
 
     fun start() {
         UseCaseFactory
@@ -52,6 +54,10 @@ class GameViewModel(
                 onNext = { state ->
                     storeObservableList.clear()
                     storeObservableList.addAll(state.storeDto.cards)
+
+                    playerStates.clear()
+                    playerStates.addAll(state.playerStates)
+
                     println("Receive " + state)
                 }
             )
