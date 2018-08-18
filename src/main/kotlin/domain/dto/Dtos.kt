@@ -9,6 +9,7 @@ data class PlayerDto(
 )
 
 data class GameStateDto(
+    val turnNumber: Int,
     val players: List<PlayerDto>,
     val playerStates: List<PlayerStateDto>,
     val storeDto: StoreDto

@@ -8,6 +8,7 @@ import org.tumba.frodo.domain.game.PlayerState
 
 fun Game.toGameStateDto(): GameStateDto {
     return GameStateDto(
+        turnNumber = this.turnNumber,
         players = this.playerStates.map { it.first.toPlayerDto() },
         playerStates = this.playerStates.map { it.second.toPlayerStateDto(it.first.number) },
         storeDto = this.cardStore.toStoreDto()

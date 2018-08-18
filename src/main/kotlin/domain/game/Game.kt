@@ -1,5 +1,8 @@
 package org.tumba.frodo.domain.game
 
+import domain.dto.GameStateDto
+import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.subjects.PublishSubject
 import org.tumba.frodo.domain.core.Player
 import java.util.*
 
@@ -8,7 +11,10 @@ class Game(
     val seed: Long = System.currentTimeMillis()
 ) {
 
-    val playerStates: List<Pair<Player, PlayerState>> = listOf()
+    var turnNumber = 0
+    val gameSubject: BehaviorSubject<Game> = BehaviorSubject.createDefault(this)
+
+    val playerStates: List<Pair<Player, PlayerState>> = players.map { it to PlayerStateFactory().createInitialState() }
     val cardStore: CardStore = CardStoreFactory().createCardStore()
     val turnOfPlayer: Player = players.first()
     var firstDiceResult: Int = 0
@@ -16,14 +22,15 @@ class Game(
     private val random = Random(seed)
     private val dice: Dice = Dice(random.nextLong())
 
-
     fun throwDices(option: DiceThrowOption) {
-        val number = when (option) {
+        /*val number = when (option) {
             DiceThrowOption.USE_ONE -> {
                 firstDiceResult = dice.play()
             }
             DiceThrowOption.USE_TWO -> dice.play()
-        }
+        }*/
+        turnNumber++
+        gameSubject.onNext(this)
     }
 
     enum class DiceThrowOption {

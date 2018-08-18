@@ -1,8 +1,6 @@
 package org.tumba.frodo.domain.usecase
 
-import domain.usecase.GetGameStateUseCase
-import domain.usecase.IGetGameStateUseCase
-import domain.usecase.IUseCaseFactory
+import domain.usecase.*
 import org.tumba.frodo.domain.game.GameHolder
 
 class UseCaseFactory: IUseCaseFactory {
@@ -13,6 +11,10 @@ class UseCaseFactory: IUseCaseFactory {
 
     override fun createGetGameStateUseCase(): IGetGameStateUseCase {
         return GetGameStateUseCase(GameHolder.instance.game!!)
+    }
+
+    override fun createThrowDiceUseCase(): IThrowDiceUseCase {
+        return ThrowDiceUseCase(GameHolder.instance.game!!)
     }
 
     companion object {

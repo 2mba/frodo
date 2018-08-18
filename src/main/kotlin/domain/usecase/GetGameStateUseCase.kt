@@ -8,6 +8,6 @@ import org.tumba.frodo.domain.game.Game
 class GetGameStateUseCase(private val game: Game): IGetGameStateUseCase {
 
     override fun execute(): Observable<GameStateDto> {
-        return Observable.just(game.toGameStateDto())
+        return game.gameSubject.map { it.toGameStateDto() }
     }
 }

@@ -29,6 +29,7 @@ enum class ProductionType {
 }
 
 enum class DevelopmentCardType(
+    override val cardName: String,
     override val triggerRange: IntRange,
     override val actionType: ActionType,
     override val productionType: ProductionType,
@@ -36,15 +37,22 @@ enum class DevelopmentCardType(
 ) : IDevelopmentCard {
 
     WheatField(
+        cardName = "WheatField",
         triggerRange = 1.toRange(),
         actionType = ActionType.EarnFromBankInAnyPlayerTurn,
         productionType = ProductionType.RawFood,
         cost = 1),
     Bakery(
+        cardName = "Bakery",
         triggerRange = 2..3,
         actionType = ActionType.EarnFromBankInMyTurn,
         productionType = ProductionType.Shop,
         cost = 1)
 }
 
-class DevelopmentCard(type: DevelopmentCardType) : IDevelopmentCard by type
+class DevelopmentCard(private val type: DevelopmentCardType) : IDevelopmentCard by type {
+
+    override fun toString(): String {
+        return type.toString()
+    }
+}

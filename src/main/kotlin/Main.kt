@@ -1,6 +1,8 @@
 package org.tumba.frodo
 
 import javafx.application.Application
+import javafx.fxml.FXMLLoader
+import javafx.scene.Parent
 import javafx.stage.Stage
 import presentation.GameView
 
@@ -14,6 +16,6 @@ fun main(args: Array<String>) {
 class FrodoApplication: Application() {
 
     override fun start(primaryStage: Stage) {
-        GameView(this, primaryStage).start()
+        GameView.start(primaryStage)
     }
 }
