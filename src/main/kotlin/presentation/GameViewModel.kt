@@ -2,12 +2,17 @@ package presentation
 
 import io.reactivex.rxjavafx.schedulers.JavaFxScheduler
 import io.reactivex.rxkotlin.subscribeBy
+import javafx.collections.FXCollections
+import javafx.collections.ObservableList
+import org.tumba.frodo.domain.core.DevelopmentCard
 import org.tumba.frodo.domain.usecase.UseCaseFactory
 
-class GamePresenter(
+class GameViewModel(
     private val players: List<String>,
     private val view: IGameView
 ) {
+
+    var storeObservableList: ObservableList<DevelopmentCard> = FXCollections.observableArrayList()
 
     fun start() {
         UseCaseFactory
@@ -44,7 +49,11 @@ class GamePresenter(
             .execute()
             .observeOn(JavaFxScheduler.platform())
             .subscribeBy(
-                onNext = { state -> view.updateGameState(state) }
+                onNext = { state ->
+                    storeObservableList.clear()
+                    storeObservableList.addAll(state.storeDto.cards)
+                    println("Receive " + state)
+                }
             )
     }
 }

@@ -7,6 +7,4 @@ interface IGameView {
     fun showError(msg: String)
 
     fun onStartGame()
-
-    fun updateGameState(state: GameStateDto)
 }

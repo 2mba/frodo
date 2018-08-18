@@ -33,6 +33,6 @@ fun PlayerState.toPlayerStateDto(playerNumber: Int): PlayerStateDto {
 
 fun CardStore.toStoreDto(): StoreDto{
     return StoreDto(
-        listOfNotNull(this.cards as? DevelopmentCard?)
+        this.cards.mapNotNull { it as? DevelopmentCard? }
     )
 }

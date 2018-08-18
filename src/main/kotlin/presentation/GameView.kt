@@ -3,8 +3,6 @@ package presentation
 import domain.dto.GameStateDto
 import javafx.beans.property.ReadOnlyIntegerWrapper
 import javafx.beans.property.ReadOnlyStringWrapper
-import javafx.collections.FXCollections
-import javafx.collections.ObservableList
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.scene.Parent
@@ -14,7 +12,6 @@ import javafx.scene.control.TableView
 import javafx.stage.Stage
 import org.tumba.frodo.FrodoApplication
 import org.tumba.frodo.domain.core.DevelopmentCard
-import org.tumba.frodo.domain.core.DevelopmentCardType
 
 
 class GameView: IGameView {
@@ -28,15 +25,14 @@ class GameView: IGameView {
     @FXML
     lateinit var storeColumnType: TableColumn<DevelopmentCard, String>
 
-    private lateinit var presenter: GamePresenter
-    private var storeObservableList: ObservableList<DevelopmentCard> = FXCollections.observableArrayList()
+    private lateinit var viewModel: GameViewModel
 
     fun initialize() {
         println("Controller working")
-        presenter = GamePresenter(listOf("Pavel", "Baira"), this)
-        presenter.start()
+        viewModel = GameViewModel(listOf("Pavel", "Baira"), this)
+        viewModel.start()
 
-        storeView.items = storeObservableList
+        storeView.items = viewModel.storeObservableList
         storeColumnName.setCellValueFactory { cellData  -> ReadOnlyStringWrapper(cellData.value.cardName) }
         storeColumnPrice.setCellValueFactory { cellData  -> ReadOnlyIntegerWrapper(cellData.value.cost) }
         storeColumnType.setCellValueFactory { cellData  -> ReadOnlyStringWrapper(cellData.value.productionType.name) }
@@ -48,13 +44,6 @@ class GameView: IGameView {
     override fun onStartGame() {
 
     }
-
-    override fun updateGameState(state: GameStateDto) {
-        storeObservableList.clear()
-        storeObservableList.addAll(state.playerStates.first().cards)
-        println("Receive " + state)
-    }
-
 
     companion object {
 
