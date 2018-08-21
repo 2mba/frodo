@@ -4,6 +4,7 @@ import domain.dto.GameStateDto
 import javafx.beans.property.ReadOnlyIntegerWrapper
 import javafx.beans.property.ReadOnlyStringWrapper
 import javafx.collections.ListChangeListener
+import javafx.event.ActionEvent
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.scene.Parent
@@ -62,6 +63,8 @@ class GameView : IGameView {
     }
 
     private fun onPlayerStateChanged() {
+        if (viewModel.playerStates.isEmpty()) return
+
         playersBox.children.forEachIndexed { idx, node ->
             val state = viewModel.playerStates[idx] ?: return@forEachIndexed
             (node as? Label?)?.apply {
@@ -80,5 +83,9 @@ class GameView : IGameView {
             primaryStage.scene = Scene(root, 300.0, 275.0)
             primaryStage.show()
         }
+    }
+
+    fun onClick(actionEvent: ActionEvent) {
+        viewModel.throwDice()
     }
 }
