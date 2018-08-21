@@ -1,21 +1,17 @@
 package org.tumba.frodo.domain.game
 
-import domain.dto.GameStateDto
-import io.reactivex.subjects.BehaviorSubject
-import io.reactivex.subjects.PublishSubject
-import org.tumba.frodo.domain.core.ActionType
 import org.tumba.frodo.domain.core.ActionType.*
 import org.tumba.frodo.domain.core.Player
 import java.util.*
 
 class Game(
     players: List<Player>,
-    val seed: Long = System.currentTimeMillis()
+    val seed: Long = System.currentTimeMillis(),
+    private val gameStateChangeCallback: IGameStateChangeCallback
+
 ) {
 
     var turnNumber = 0
-    val gameSubject: BehaviorSubject<Game> = BehaviorSubject.createDefault(this)
-
     val playerStates: List<Pair<Player, PlayerState>> = players.map { it to PlayerStateFactory().createInitialState() }
     val cardStore: CardStore = CardStoreFactory().createCardStore()
     val turnOfPlayer: Player = players.first()
@@ -27,7 +23,11 @@ class Game(
     fun throwDices(option: DiceThrowOption) {
         diceThrowResult = throwDice(option)
         handleDiceThrow(diceThrowResult)
-        gameSubject.onNext(this)
+
+        gameStateChangeCallback.onGameStateChanged(
+            GameStateChange.DiceThrowResult,
+            GameStateChange.PlayerStates
+        )
     }
 
     private fun throwDice(option: DiceThrowOption): DiceThrowResult {
@@ -57,12 +57,25 @@ class Game(
     }
 }
 
+interface IGameStateChangeCallback {
+
+    fun onGameStateChanged(vararg change: GameStateChange)
+
+}
+
+enum class GameStateChange {
+    PlayerStates,
+    Store,
+    DiceThrowResult
+}
+
 class GameFactory {
 
     fun create(
         players: List<Player>,
+        gameStateChangeCallback: IGameStateChangeCallback,
         seed: Long = System.currentTimeMillis()
     ): Game {
-        return Game(players, seed)
+        return Game(players, seed, gameStateChangeCallback)
     }
 }

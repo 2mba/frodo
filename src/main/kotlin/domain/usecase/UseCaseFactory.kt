@@ -10,11 +10,11 @@ class UseCaseFactory: IUseCaseFactory {
     }
 
     override fun createGetGameStateUseCase(): IGetGameStateUseCase {
-        return GetGameStateUseCase(GameHolder.instance.game!!)
+        return GetGameStateUseCase(GameHolder.instance)
     }
 
     override fun createThrowDiceUseCase(): IThrowDiceUseCase {
-        return ThrowDiceUseCase(GameHolder.instance.game!!)
+        return ThrowDiceUseCase(GameHolder.instance.game ?: throw IllegalStateException("Game had not been started"))
     }
 
     companion object {
