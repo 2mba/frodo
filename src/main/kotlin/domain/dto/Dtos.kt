@@ -12,7 +12,8 @@ data class GameStateDto(
     val turnNumber: Int,
     val players: List<PlayerDto>,
     val playerStates: List<PlayerStateDto>,
-    val storeDto: StoreDto
+    val storeDto: StoreDto,
+    val diceThrowResult: DiceThrowResultDto
 )
 
 data class StoreDto(
@@ -25,3 +26,10 @@ data class PlayerStateDto(
     val sightCards: List<SightCard>,
     val coins: Int
 )
+
+class DiceThrowResultDto(
+    val first: Int,
+    val second: Int?
+) {
+    val sum = first + (second ?: 0)
+}

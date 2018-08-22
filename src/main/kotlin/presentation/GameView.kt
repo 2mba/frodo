@@ -1,6 +1,7 @@
 package presentation
 
 import domain.dto.PlayerStateDto
+import javafx.beans.binding.Bindings
 import javafx.beans.property.ReadOnlyIntegerWrapper
 import javafx.beans.property.ReadOnlyStringWrapper
 import javafx.collections.ListChangeListener
@@ -9,12 +10,14 @@ import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.scene.Parent
 import javafx.scene.Scene
+import javafx.scene.control.Label
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.layout.HBox
 import javafx.stage.Stage
 import org.tumba.frodo.FrodoApplication
 import org.tumba.frodo.domain.core.DevelopmentCard
+import java.util.concurrent.Callable
 
 
 class GameView : IGameView {
@@ -29,6 +32,8 @@ class GameView : IGameView {
     lateinit var storeColumnType: TableColumn<DevelopmentCard, String>
     @FXML
     lateinit var playersBox: HBox
+    @FXML
+    lateinit var diceThrowResult: Label
 
     private lateinit var viewModel: GameViewModel
     private var playerViews: MutableList<PlayerView> = mutableListOf()
@@ -39,6 +44,11 @@ class GameView : IGameView {
         viewModel = GameViewModel(listOf("Pavel", "Baira"), this)
 
         viewModel.playerStates.addListener(ListChangeListener { change -> onPlayerStateChanged() })
+
+        val binding = Bindings.createStringBinding(Callable {
+            "${viewModel.diceThrowResult.value?.sum ?: "-"}"
+        }, viewModel.diceThrowResult)
+        diceThrowResult.textProperty().bind(binding)
 
         storeView.items = viewModel.storeObservableList
         storeColumnName.setCellValueFactory { cellData -> ReadOnlyStringWrapper(cellData.value.cardName) }

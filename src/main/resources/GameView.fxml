@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.*?>
 <BorderPane prefHeight="600" prefWidth="800" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentation.GameView">
     <bottom>
-        <HBox fx:id="playersBox" prefHeight="200.0" prefWidth="200.0"/>
+        <HBox fx:id="playersBox" prefHeight="200.0" prefWidth="200.0" />
     </bottom>
    <center>
       <TableView fx:id="storeView" prefHeight="300.0" prefWidth="200.0" BorderPane.alignment="CENTER">
@@ -17,6 +16,9 @@
       </TableView>
    </center>
    <top>
-      <Button mnemonicParsing="false" onAction="#onClick" text="Button" BorderPane.alignment="CENTER" />
+       <HBox prefHeight="100.0" prefWidth="200.0">
+           <Button mnemonicParsing="false" onAction="#onClick" text="Throw dice" BorderPane.alignment="CENTER" />
+           <Label text="Label" fx:id="diceThrowResult"/>
+       </HBox>
    </top>
 </BorderPane>

@@ -1,8 +1,10 @@
 package presentation
 
+import domain.dto.DiceThrowResultDto
 import domain.dto.PlayerStateDto
 import io.reactivex.rxjavafx.schedulers.JavaFxScheduler
 import io.reactivex.rxkotlin.subscribeBy
+import javafx.beans.property.SimpleObjectProperty
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import org.tumba.frodo.domain.core.DevelopmentCard
@@ -14,7 +16,8 @@ class GameViewModel(
 ) {
 
     var storeObservableList: ObservableList<DevelopmentCard> = FXCollections.observableArrayList()
-    var playerStates: ObservableList<PlayerStateDto> = FXCollections.observableArrayList(PlayerStateDto(0, listOf(), listOf(), 50))
+    var playerStates: ObservableList<PlayerStateDto> = FXCollections.observableArrayList()
+    var diceThrowResult: SimpleObjectProperty<DiceThrowResultDto?> = SimpleObjectProperty(null)
 
     fun start() {
         UseCaseFactory
@@ -57,6 +60,8 @@ class GameViewModel(
 
                     playerStates.clear()
                     playerStates.addAll(state.playerStates)
+
+                    diceThrowResult.value = state.diceThrowResult
 
                     println("Receive " + state)
                 }
