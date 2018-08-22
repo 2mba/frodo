@@ -9,7 +9,7 @@ import org.tumba.frodo.domain.core.DevelopmentCard
 import org.tumba.frodo.domain.usecase.UseCaseFactory
 
 class GameViewModel(
-    private val players: List<String>,
+    val players: List<String>,
     private val view: IGameView
 ) {
 
