@@ -11,13 +11,14 @@ import org.tumba.frodo.domain.core.DevelopmentCard
 import org.tumba.frodo.domain.usecase.UseCaseFactory
 
 class GameViewModel(
-    val players: List<String>,
-    private val view: IGameView
+    val players: List<String>
 ) {
 
     var storeObservableList: ObservableList<DevelopmentCard> = FXCollections.observableArrayList()
     var playerStates: ObservableList<PlayerStateDto> = FXCollections.observableArrayList()
     var diceThrowResult: SimpleObjectProperty<DiceThrowResultDto?> = SimpleObjectProperty(null)
+
+    var selectedStoreCards: SimpleObjectProperty<List<DevelopmentCard>> = SimpleObjectProperty(listOf())
 
     fun start() {
         UseCaseFactory
@@ -27,11 +28,11 @@ class GameViewModel(
             .observeOn(JavaFxScheduler.platform())
             .subscribeBy(
                 onError = { err ->
-                    view.showError(err.message.orEmpty())
+                    //view.showError(err.message.orEmpty())
                     err.printStackTrace()
                 },
                 onComplete = {
-                    view.onStartGame()
+                    //view.onStartGame()
                     getState()
                 }
             )
@@ -42,6 +43,21 @@ class GameViewModel(
         UseCaseFactory
             .instance
             .createThrowDiceUseCase()
+            .execute()
+            .observeOn(JavaFxScheduler.platform())
+            .subscribeBy()
+    }
+
+    fun buyCard() {
+        selectedStoreCards.value.firstOrNull()?.let { card ->
+            buyCard(card)
+        }
+    }
+
+    private fun buyCard(card: DevelopmentCard) {
+        UseCaseFactory
+            .instance
+            .createBuyCardUseCase(card)
             .execute()
             .observeOn(JavaFxScheduler.platform())
             .subscribeBy()

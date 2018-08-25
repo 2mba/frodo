@@ -20,7 +20,7 @@ import org.tumba.frodo.domain.core.DevelopmentCard
 import java.util.concurrent.Callable
 
 
-class GameView : IGameView {
+class GameView {
 
     @FXML
     lateinit var storeView: TableView<DevelopmentCard>
@@ -41,7 +41,7 @@ class GameView : IGameView {
     fun initialize() {
 
         println("Controller working")
-        viewModel = GameViewModel(listOf("Pavel", "Baira"), this)
+        viewModel = GameViewModel(listOf("Pavel", "Baira"))
 
         viewModel.playerStates.addListener(ListChangeListener { change -> onPlayerStateChanged() })
 
@@ -55,13 +55,19 @@ class GameView : IGameView {
         storeColumnPrice.setCellValueFactory { cellData -> ReadOnlyIntegerWrapper(cellData.value.cost) }
         storeColumnType.setCellValueFactory { cellData -> ReadOnlyStringWrapper(cellData.value.productionType.name) }
 
+        storeView.selectionModel.selectedItems.addListener(ListChangeListener { change ->
+            viewModel.selectedStoreCards.set(change.list)
+        })
+
         viewModel.start()
     }
 
-    override fun showError(msg: String) {
+    fun onClick(actionEvent: ActionEvent) {
+        viewModel.throwDice()
     }
 
-    override fun onStartGame() {
+    fun onClickBuyCard(actionEvent: ActionEvent) {
+        viewModel.buyCard()
     }
 
     private fun onPlayerStateChanged() {
@@ -107,9 +113,5 @@ class GameView : IGameView {
             primaryStage.scene = Scene(root)
             primaryStage.show()
         }
-    }
-
-    fun onClick(actionEvent: ActionEvent) {
-        viewModel.throwDice()
     }
 }
