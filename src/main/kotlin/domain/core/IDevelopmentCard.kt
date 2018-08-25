@@ -55,4 +55,21 @@ class DevelopmentCard(private val type: DevelopmentCardType) : IDevelopmentCard 
     override fun toString(): String {
         return type.toString()
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as DevelopmentCard
+
+        if (type != other.type) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return type.hashCode()
+    }
+
+
 }

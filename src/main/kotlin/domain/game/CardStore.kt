@@ -5,11 +5,11 @@ import org.tumba.frodo.domain.core.DevelopmentCardType
 import org.tumba.frodo.domain.core.IDevelopmentCard
 
 class CardStore(
-    initialCards: List<IDevelopmentCard>
+    initialCards: List<DevelopmentCard>
 ){
-    val cards: MutableList<IDevelopmentCard> = initialCards.toMutableList()
+    val cards: MutableList<DevelopmentCard> = initialCards.toMutableList()
 
-    fun buyCard(card: IDevelopmentCard): Boolean {
+    fun buy(card: IDevelopmentCard): Boolean {
         return cards.remove(card)
     }
 }
@@ -18,15 +18,15 @@ class CardStoreFactory {
 
     fun createCardStore(): CardStore {
         return CardStore(
-            mutableListOf<IDevelopmentCard>().apply {
+            mutableListOf<DevelopmentCard>().apply {
                 addAll(createDevelopmentCards(DevelopmentCardType.WheatField, 4))
                 addAll(createDevelopmentCards(DevelopmentCardType.Bakery, 4))
             }
         )
     }
 
-    private fun createDevelopmentCards(type: DevelopmentCardType, count: Int): List<IDevelopmentCard> {
-        return mutableListOf<IDevelopmentCard>().apply {
+    private fun createDevelopmentCards(type: DevelopmentCardType, count: Int): List<DevelopmentCard> {
+        return mutableListOf<DevelopmentCard>().apply {
             0.until(count).forEach {
                 add(DevelopmentCard(type))
             }

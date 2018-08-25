@@ -1,5 +1,8 @@
 package domain.dto
 
+import domain.game.GameState
+import domain.game.GameState.CardBuying
+import domain.game.GameState.DiceThrowing
 import org.tumba.frodo.domain.core.DevelopmentCard
 import org.tumba.frodo.domain.core.Player
 import org.tumba.frodo.domain.game.CardStore
@@ -10,10 +13,11 @@ import org.tumba.frodo.domain.game.PlayerState
 fun Game.toGameStateDto(): GameStateDto {
     return GameStateDto(
         turnNumber = this.turnNumber,
-        players = this.playerStates.map { it.first.toPlayerDto() },
-        playerStates = this.playerStates.map { it.second.toPlayerStateDto(it.first.number) },
+        players = this.playerStates.map { it.key.toPlayerDto() },
+        playerStates = this.playerStates.map { it.value.toPlayerStateDto(it.key.number) },
         storeDto = this.cardStore.toStoreDto(),
-        diceThrowResult = this.diceThrowResult.toDiceThrowResultDto()
+        diceThrowResult = this.diceThrowResult?.toDiceThrowResultDto(),
+        gameState = this.gameState.toGameStateDto()
     )
 }
 
@@ -27,8 +31,8 @@ fun Player.toPlayerDto(): PlayerDto {
 fun PlayerState.toPlayerStateDto(playerNumber: Int): PlayerStateDto {
     return PlayerStateDto(
         playerNumber = playerNumber,
-        cards = this.city.buildings,
-        sightCards = this.city.sightCards,
+        cards = this.cards.buildings,
+        sightCards = this.cards.sightCards,
         coins = coins
     )
 }
@@ -44,4 +48,11 @@ fun DiceThrowResult.toDiceThrowResultDto(): DiceThrowResultDto {
         first = first,
         second = second
     )
+}
+
+fun GameState.toGameStateDto(): GameProcessStateDto {
+    return when (this) {
+        DiceThrowing -> GameProcessStateDto.DiceThrowing
+        CardBuying -> GameProcessStateDto.CardBuying
+    }
 }

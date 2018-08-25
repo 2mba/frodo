@@ -1,6 +1,7 @@
 package org.tumba.frodo.domain.usecase
 
 import domain.usecase.*
+import org.tumba.frodo.domain.core.DevelopmentCard
 import org.tumba.frodo.domain.game.GameHolder
 
 class UseCaseFactory: IUseCaseFactory {
@@ -15,6 +16,10 @@ class UseCaseFactory: IUseCaseFactory {
 
     override fun createThrowDiceUseCase(): IThrowDiceUseCase {
         return ThrowDiceUseCase(GameHolder.instance.game ?: throw IllegalStateException("Game had not been started"))
+    }
+
+    override fun createBuyCardUseCase(card: DevelopmentCard): IBuyCardCase {
+        return BuyCardUseCase(card, GameHolder.instance)
     }
 
     companion object {

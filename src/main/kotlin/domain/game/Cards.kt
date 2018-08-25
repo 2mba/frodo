@@ -4,22 +4,22 @@ import org.tumba.frodo.domain.core.DevelopmentCard
 import org.tumba.frodo.domain.core.DevelopmentCardType
 import org.tumba.frodo.domain.core.SightCard
 
-class City(
+class Cards(
     initialBuildings: List<DevelopmentCard>
 ){
 
     val buildings: MutableList<DevelopmentCard> = initialBuildings.toMutableList()
     val sightCards: MutableList<SightCard> = mutableListOf()
 
-    fun build(card: DevelopmentCard) {
+    fun add(card: DevelopmentCard) {
         buildings.add(card)
     }
 }
 
 class CityFactory {
 
-    fun createInitialCity(): City {
-        return City(
+    fun createInitialCards(): Cards {
+        return Cards(
             initialBuildings = mutableListOf(
                 DevelopmentCard(DevelopmentCardType.WheatField),
                 DevelopmentCard(DevelopmentCardType.Bakery)
