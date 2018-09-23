@@ -1,6 +1,5 @@
 package presentation
 
-import domain.dto.PlayerStateDto
 import javafx.beans.binding.Bindings
 import javafx.beans.property.ReadOnlyIntegerWrapper
 import javafx.beans.property.ReadOnlyStringWrapper
@@ -41,7 +40,7 @@ class GameView {
     fun initialize() {
 
         println("Controller working")
-        viewModel = GameViewModel(listOf("Pavel", "Baira"))
+        viewModel = GameViewModel(listOf("Pavel", "Baira", "Player 3", "Player 4"))
 
         viewModel.playerStates.addListener(ListChangeListener { change -> onPlayerStateChanged() })
 
@@ -94,12 +93,12 @@ class GameView {
         }
     }
 
-    private fun updatePlayerView(playerView: PlayerView, playerStateDto: PlayerStateDto) {
-        playerView.name.text = viewModel.players.getOrElse(playerStateDto.playerNumber, { "Unknown" })
-        playerView.coins.text = playerStateDto.coins.toString()
+    private fun updatePlayerView(playerView: PlayerView, playerState: GameViewModel.PlayerStateViewModel) {
+        playerView.name.text = viewModel.players.getOrElse(playerState.playerId) { "Unknown" }
+        playerView.coins.text = playerState.coins.toString()
         playerView.cardsObservableList.apply {
             clear()
-            addAll(playerStateDto.cards.map { it.cardName })
+            addAll(playerState.cards.map { it.cardName })
         }
     }
 

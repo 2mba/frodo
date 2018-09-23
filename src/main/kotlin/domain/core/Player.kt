@@ -2,7 +2,7 @@ package org.tumba.frodo.domain.core
 
 
 class Player(
-    val number: Int,
+    val id: Int,
     val name: String
 )
 

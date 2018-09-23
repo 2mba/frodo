@@ -89,7 +89,7 @@ class Game(
 
     private fun requireState(gameState: GameState) {
         if (this.gameState != gameState) {
-            throw IllegalStateException("Illegal game state")
+            throw IllegalStateException("Illegal game state. Required $gameState, but current ${this.gameState}")
         }
     }
 }

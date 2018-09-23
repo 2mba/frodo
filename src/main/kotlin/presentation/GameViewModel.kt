@@ -1,13 +1,13 @@
 package presentation
 
 import domain.dto.DiceThrowResultDto
-import domain.dto.PlayerStateDto
 import io.reactivex.rxjavafx.schedulers.JavaFxScheduler
 import io.reactivex.rxkotlin.subscribeBy
 import javafx.beans.property.SimpleObjectProperty
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import org.tumba.frodo.domain.core.DevelopmentCard
+import org.tumba.frodo.domain.core.SightCard
 import org.tumba.frodo.domain.usecase.UseCaseFactory
 
 class GameViewModel(
@@ -15,7 +15,7 @@ class GameViewModel(
 ) {
 
     var storeObservableList: ObservableList<DevelopmentCard> = FXCollections.observableArrayList()
-    var playerStates: ObservableList<PlayerStateDto> = FXCollections.observableArrayList()
+    var playerStates: ObservableList<PlayerStateViewModel> = FXCollections.observableArrayList()
     var diceThrowResult: SimpleObjectProperty<DiceThrowResultDto?> = SimpleObjectProperty(null)
 
     var selectedStoreCards: SimpleObjectProperty<List<DevelopmentCard>> = SimpleObjectProperty(listOf())
@@ -75,12 +75,28 @@ class GameViewModel(
                     storeObservableList.addAll(state.storeDto.cards)
 
                     playerStates.clear()
-                    playerStates.addAll(state.playerStates)
+                    playerStates.addAll(state.playerStates.map { playerState ->
+                        PlayerStateViewModel(
+                            playerId = playerState.playerId,
+                            cards = playerState.cards,
+                            sightCards = playerState.sightCards,
+                            coins = playerState.coins,
+                            isPlayerTurn = playerState.playerId == state.turnOfPlayer
+                        )
+                    })
 
                     diceThrowResult.value = state.diceThrowResult
 
-                    println("Receive " + state)
+                    println("Receive $state")
                 }
             )
     }
+
+    class PlayerStateViewModel(
+        val playerId: Int,
+        val cards: List<DevelopmentCard>,
+        val sightCards: List<SightCard>,
+        val coins: Int,
+        val isPlayerTurn: Boolean
+    )
 }

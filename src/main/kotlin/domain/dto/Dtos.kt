@@ -4,7 +4,7 @@ import org.tumba.frodo.domain.core.DevelopmentCard
 import org.tumba.frodo.domain.core.SightCard
 
 data class PlayerDto(
-    val number: Int,
+    val id: Int,
     val name: String
 )
 
@@ -14,7 +14,8 @@ data class GameStateDto(
     val playerStates: List<PlayerStateDto>,
     val storeDto: StoreDto,
     val diceThrowResult: DiceThrowResultDto?,
-    val gameState: GameProcessStateDto
+    val gameState: GameProcessStateDto,
+    val turnOfPlayer: Int
 )
 
 data class StoreDto(
@@ -22,7 +23,7 @@ data class StoreDto(
 )
 
 data class PlayerStateDto(
-    val playerNumber: Int,
+    val playerId: Int,
     val cards: List<DevelopmentCard>,
     val sightCards: List<SightCard>,
     val coins: Int

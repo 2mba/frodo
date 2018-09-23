@@ -14,23 +14,24 @@ fun Game.toGameStateDto(): GameStateDto {
     return GameStateDto(
         turnNumber = this.turnNumber,
         players = this.playerStates.map { it.key.toPlayerDto() },
-        playerStates = this.playerStates.map { it.value.toPlayerStateDto(it.key.number) },
+        playerStates = this.playerStates.map { it.value.toPlayerStateDto(it.key.id) },
         storeDto = this.cardStore.toStoreDto(),
         diceThrowResult = this.diceThrowResult?.toDiceThrowResultDto(),
-        gameState = this.gameState.toGameStateDto()
+        gameState = this.gameState.toGameStateDto(),
+        turnOfPlayer = this.turnOfPlayer.id
     )
 }
 
 fun Player.toPlayerDto(): PlayerDto {
     return PlayerDto(
-        this.number,
+        this.id,
         this.name
     )
 }
 
 fun PlayerState.toPlayerStateDto(playerNumber: Int): PlayerStateDto {
     return PlayerStateDto(
-        playerNumber = playerNumber,
+        playerId = playerNumber,
         cards = this.cards.buildings,
         sightCards = this.cards.sightCards,
         coins = coins
