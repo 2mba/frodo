@@ -56,6 +56,13 @@ class GameViewModel(
         }
     }
 
+    fun endTurn() {
+        useCaseFactory.createEndTurnUseCase()
+            .execute()
+            .observeOn(JavaFxScheduler.platform())
+            .subscribeBy()
+    }
+
     private fun buyCard(card: DevelopmentCard) {
         useCaseFactory
             .createBuyCardUseCase(card)
@@ -81,7 +88,7 @@ class GameViewModel(
                             cards = playerState.cards,
                             sightCards = playerState.sightCards,
                             coins = playerState.coins,
-                            isPlayerTurn = playerState.playerId == state.turnOfPlayer
+                            isPlayerTurn = playerState.playerId == state.currentPlayerId
                         )
                     })
 

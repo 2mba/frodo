@@ -11,4 +11,6 @@ interface IUseCaseFactory {
     fun createThrowDiceUseCase(): IThrowDiceUseCase
 
     fun createBuyCardUseCase(card: DevelopmentCard): IBuyCardCase
+
+    fun createEndTurnUseCase(): IEndTurnCase
 }

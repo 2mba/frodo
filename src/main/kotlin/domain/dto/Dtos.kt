@@ -15,7 +15,7 @@ data class GameStateDto(
     val storeDto: StoreDto,
     val diceThrowResult: DiceThrowResultDto?,
     val gameState: GameProcessStateDto,
-    val turnOfPlayer: Int
+    val currentPlayerId: Int
 )
 
 data class StoreDto(

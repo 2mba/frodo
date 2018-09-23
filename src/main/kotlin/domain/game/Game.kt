@@ -8,26 +8,29 @@ import org.tumba.frodo.domain.core.DevelopmentCard
 import org.tumba.frodo.domain.core.Player
 import java.util.*
 
-@Suppress("MemberVisibilityCanPrivate")
 class Game(
-    players: List<Player>,
-    val seed: Long = System.currentTimeMillis(),
+    seed: Long = System.currentTimeMillis(),
+    private val players: List<Player>,
     private val gameStateChangeCallback: IGameStateChangeCallback
 
 ) {
-    var turnNumber = 0
     val playerStates: Map<Player, PlayerState>
     val cardStore: CardStore
-    val turnOfPlayer: Player
+    val currentPlayer: Player
+        get() {
+            return players.firstOrNull { it.id == currentPlayerId }
+                ?: throw IllegalStateException("Illegal player id: $currentPlayerId")
+        }
     var diceThrowResult: DiceThrowResult? = null
     var gameState: GameState
+    var turnNumber = 0
+    var currentPlayerId = players.first().id
 
     private val random = Random(seed)
     private val dice: Dice = Dice(random.nextLong())
 
     init {
         cardStore = CardStoreFactory().createCardStore()
-        turnOfPlayer = players.first()
         playerStates = players.associate { it to PlayerStateFactory().createInitialState() }
         gameState = GameState.DiceThrowing
     }
@@ -35,13 +38,18 @@ class Game(
     fun buyCard(card: DevelopmentCard) {
         requireState(GameState.CardBuying)
 
-        val cardBoughtSuccess = cardStore.buy(card)
-        if (!cardBoughtSuccess) {
-            throw IllegalArgumentException("Card (${card.cardName}) doesn't exist in store")
+        val cost = cardStore.cards.firstOrNull { it == card }?.cost
+            ?: throw IllegalArgumentException("Card (${card.cardName}) doesn't exist in store")
+        if (!isEnoughCoins(cost)) {
+            throw IllegalArgumentException("Not enough coins")
         }
-        playerStates[turnOfPlayer]?.cards?.add(card)
-
-        gameState = GameState.DiceThrowing
+        if (!cardStore.buy(card)) {
+            throw IllegalArgumentException("Can't buy card $card")
+        }
+        getCurrentPlayerState().apply {
+            cards.add(card)
+            coins -= cost
+        }
         gameStateChangeCallback.onGameStateChanged(GameStateChange.PlayerStates)
     }
 
@@ -55,6 +63,16 @@ class Game(
         gameState = GameState.CardBuying
         gameStateChangeCallback.onGameStateChanged(
             GameStateChange.DiceThrowResult,
+            GameStateChange.PlayerStates
+        )
+    }
+
+    fun endTurn() {
+        requireState(GameState.CardBuying)
+
+        gameState = GameState.DiceThrowing
+        changeCurrentPlayer()
+        gameStateChangeCallback.onGameStateChanged(
             GameStateChange.PlayerStates
         )
     }
@@ -76,7 +94,7 @@ class Game(
                             state.coins++
                         }
                         EarnFromBankInMyTurn -> {
-                            if (player == turnOfPlayer) {
+                            if (player == currentPlayer) {
                                 state.coins++
                             }
                         }
@@ -87,11 +105,27 @@ class Game(
         }
     }
 
+    private fun isEnoughCoins(coins: Int): Boolean {
+        return getCurrentPlayerState().coins >= coins
+    }
+
+    private fun getCurrentPlayerState(): PlayerState {
+        return playerStates[currentPlayer] ?: throw IllegalArgumentException("Unknown player: $currentPlayer")
+    }
+
     private fun requireState(gameState: GameState) {
         if (this.gameState != gameState) {
             throw IllegalStateException("Illegal game state. Required $gameState, but current ${this.gameState}")
         }
     }
+
+    private fun changeCurrentPlayer() {
+        currentPlayerId = with(players) {
+            val idx = indexOfFirst { it.id == currentPlayerId } + 1
+            get(idx % size).id
+        }
+    }
+
 }
 
 interface IGameStateChangeCallback {
@@ -112,6 +146,10 @@ class GameFactory {
         gameStateChangeCallback: IGameStateChangeCallback,
         seed: Long = System.currentTimeMillis()
     ): Game {
-        return Game(players, seed, gameStateChangeCallback)
+        return Game(
+            seed = seed,
+            players = players,
+            gameStateChangeCallback = gameStateChangeCallback
+        )
     }
 }

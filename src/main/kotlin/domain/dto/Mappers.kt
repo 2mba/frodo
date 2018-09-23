@@ -18,7 +18,7 @@ fun Game.toGameStateDto(): GameStateDto {
         storeDto = this.cardStore.toStoreDto(),
         diceThrowResult = this.diceThrowResult?.toDiceThrowResultDto(),
         gameState = this.gameState.toGameStateDto(),
-        turnOfPlayer = this.turnOfPlayer.id
+        currentPlayerId = this.currentPlayer.id
     )
 }
 

@@ -19,7 +19,8 @@
        <HBox prefHeight="100.0" prefWidth="200.0">
            <Button mnemonicParsing="false" onAction="#onClick" text="Throw dice" BorderPane.alignment="CENTER" />
            <Button mnemonicParsing="false" onAction="#onClickBuyCard" text="Buy" BorderPane.alignment="CENTER" />
-           <Label text="Label" fx:id="diceThrowResult"/>
+         <Button onAction="#onClickEndTurn" mnemonicParsing="false" text="End turn" />
+           <Label fx:id="diceThrowResult" text="Label" />
        </HBox>
    </top>
 </BorderPane>

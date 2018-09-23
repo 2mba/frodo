@@ -61,12 +61,19 @@ class GameView {
         viewModel.start()
     }
 
+    @Suppress("UNUSED_PARAMETER")
     fun onClick(actionEvent: ActionEvent) {
         viewModel.throwDice()
     }
 
+    @Suppress("UNUSED_PARAMETER")
     fun onClickBuyCard(actionEvent: ActionEvent) {
         viewModel.buyCard()
+    }
+
+    @Suppress("UNUSED_PARAMETER")
+    fun onClickEndTurn(actionEvent: ActionEvent) {
+        viewModel.endTurn()
     }
 
     private fun onPlayerStateChanged() {

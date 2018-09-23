@@ -21,4 +21,8 @@ class UseCaseFactory: IUseCaseFactory {
     override fun createBuyCardUseCase(card: DevelopmentCard): IBuyCardCase {
         return BuyCardUseCase(card, GameHolder.instance)
     }
+
+    override fun createEndTurnUseCase(): IEndTurnCase {
+        return EndTurnUseCase(GameHolder.instance)
+    }
 }
