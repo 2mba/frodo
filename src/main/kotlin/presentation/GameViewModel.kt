@@ -1,18 +1,20 @@
 package presentation
 
 import domain.dto.DiceThrowResultDto
+import domain.usecase.IUseCaseFactory
 import io.reactivex.rxjavafx.schedulers.JavaFxScheduler
 import io.reactivex.rxkotlin.subscribeBy
 import javafx.beans.property.SimpleObjectProperty
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
+import org.koin.standalone.KoinComponent
+import org.koin.standalone.inject
 import org.tumba.frodo.domain.core.DevelopmentCard
 import org.tumba.frodo.domain.core.SightCard
-import org.tumba.frodo.domain.usecase.UseCaseFactory
 
 class GameViewModel(
     val players: List<String>
-) {
+) : KoinComponent {
 
     var storeObservableList: ObservableList<DevelopmentCard> = FXCollections.observableArrayList()
     var playerStates: ObservableList<PlayerStateViewModel> = FXCollections.observableArrayList()
@@ -20,9 +22,10 @@ class GameViewModel(
 
     var selectedStoreCards: SimpleObjectProperty<List<DevelopmentCard>> = SimpleObjectProperty(listOf())
 
+    private val useCaseFactory: IUseCaseFactory by inject()
+
     fun start() {
-        UseCaseFactory
-            .instance
+        useCaseFactory
             .createStartGameUseCase(players)
             .execute()
             .observeOn(JavaFxScheduler.platform())
@@ -40,8 +43,7 @@ class GameViewModel(
     }
 
     fun throwDice() {
-        UseCaseFactory
-            .instance
+        useCaseFactory
             .createThrowDiceUseCase()
             .execute()
             .observeOn(JavaFxScheduler.platform())
@@ -55,17 +57,15 @@ class GameViewModel(
     }
 
     private fun buyCard(card: DevelopmentCard) {
-        UseCaseFactory
-            .instance
+        useCaseFactory
             .createBuyCardUseCase(card)
             .execute()
             .observeOn(JavaFxScheduler.platform())
             .subscribeBy()
     }
 
-    private fun getState() {              
-        UseCaseFactory
-            .instance
+    private fun getState() {
+        useCaseFactory
             .createGetGameStateUseCase()
             .execute()
             .observeOn(JavaFxScheduler.platform())

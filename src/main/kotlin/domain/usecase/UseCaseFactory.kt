@@ -21,9 +21,4 @@ class UseCaseFactory: IUseCaseFactory {
     override fun createBuyCardUseCase(card: DevelopmentCard): IBuyCardCase {
         return BuyCardUseCase(card, GameHolder.instance)
     }
-
-    companion object {
-
-        val instance by lazy { UseCaseFactory() }
-    }
 }
